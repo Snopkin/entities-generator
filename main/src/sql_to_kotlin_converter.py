@@ -10,7 +10,7 @@ class SQLToKotlinConverter:
         self.root.title("SQL to Kotlin Entity Converter")
         self.text_input = tk.Text(root, height=20, width=80)
         self.text_input.pack()
-        self.convert_button = tk.Button(root, text="Convert to Kotlin", command=self.convert_sql_to_kotlin)
+        self.convert_button = tk.Button(root, text="Convert to Kotlin :)", command=self.convert_sql_to_kotlin)
         self.convert_button.pack()
 
     def convert_sql_to_kotlin(self):
