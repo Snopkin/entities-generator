@@ -1,10 +1,9 @@
 from tkinter import Text, filedialog
 import tkinter as tk
-import re  # Add this import for regular expressions
+import re
 
 
-# Your existing code
-
+__author__ = "Lidor Nir Shalom"
 class SQLToKotlinConverter:
     def __init__(self, root):
         self.root = root
@@ -27,7 +26,6 @@ class SQLToKotlinConverter:
                     file.write(kotlin_code)
 
     def generate_kotlin_entity(self, sql_text):
-        # Match the table name
         table_name_match = re.search(r'create table (\w+)', sql_text, re.IGNORECASE)
         if not table_name_match:
             return None
@@ -38,7 +36,6 @@ class SQLToKotlinConverter:
         kotlin_code = f"package com.example.model.entity\n\nimport java.math.BigDecimal\nimport java.time.OffsetDateTime\nimport java.util.UUID\n\n"
         kotlin_code += f"data class {kotlin_class_name}(\n"
 
-        # Extract the column definitions only, ignoring the CREATE TABLE part
         columns = re.findall(r'(\w+)\s+([\w\(\)]+)', sql_text[sql_text.lower().find('('):])
         kotlin_fields = []
         column_constants = []
