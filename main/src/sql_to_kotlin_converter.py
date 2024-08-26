@@ -80,7 +80,7 @@ class SQLToKotlinConverter:
         kotlin_code += ",\n".join(row_getters)
         kotlin_code += "\n      )\n    }\n\n"
 
-        kotlin_code += "    fun RowSet<Row>.to" + kotlin_class_name + "s(): List<" + kotlin_class_name + "> {\n"
+        kotlin_code += "    fun RowSet<Row>.to" + kotlin_class_name[:-1] + "ies(): List<" + kotlin_class_name + "> {\n"
         kotlin_code += "      return this.map { it.to" + kotlin_class_name + "() }\n"
         kotlin_code += "    }\n  }\n\n"
 
