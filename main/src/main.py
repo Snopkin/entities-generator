@@ -27,6 +27,7 @@ class SQLToKotlinConverter:
                     file.write(kotlin_code)
 
     def generate_kotlin_entity(self, sql_text):
+        # Match the table name
         table_name_match = re.search(r'create table (\w+)', sql_text, re.IGNORECASE)
         if not table_name_match:
             return None
@@ -37,7 +38,8 @@ class SQLToKotlinConverter:
         kotlin_code = f"package com.example.model.entity\n\nimport java.math.BigDecimal\nimport java.time.OffsetDateTime\nimport java.util.UUID\n\n"
         kotlin_code += f"data class {kotlin_class_name}(\n"
 
-        columns = re.findall(r'(\w+)\s+([\w\(\)]+)', sql_text)
+        # Extract the column definitions only, ignoring the CREATE TABLE part
+        columns = re.findall(r'(\w+)\s+([\w\(\)]+)', sql_text[sql_text.lower().find('('):])
         kotlin_fields = []
         column_constants = []
         row_getters = []
@@ -55,7 +57,8 @@ class SQLToKotlinConverter:
         kotlin_code += "\n) {\n"
 
         kotlin_code += "  companion object {\n"
-        kotlin_code += '    const val TABLE_NAME = "YOUR_SCHEMA.YOUR_TABLE"\n\n'
+        kotlin_code += f'    const val TABLE_NAME = "{table_name}"\n\n'  # Use the actual table name
+
         kotlin_code += "    // column names\n"
         kotlin_code += "\n".join(column_constants)
         kotlin_code += "\n\n    fun Row.to" + kotlin_class_name + "(): " + kotlin_class_name + " {\n"
