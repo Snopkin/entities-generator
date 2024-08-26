@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="add09109-74ef-4cf1-ae95-23cd99556944" name="Changes" comment="refactoring">
+    <list default="true" id="add09109-74ef-4cf1-ae95-23cd99556944" name="Changes" comment="fixed bigdecimal issue">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/src/sql_to_kotlin_converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/sql_to_kotlin_converter.py" afterDir="false" />
     </list>
@@ -133,7 +133,23 @@
       <option name="project" value="LOCAL" />
       <updated>1724672558036</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fixed bigint mapped to int instead of long issue">
+      <option name="closed" value="true" />
+      <created>1724673245874</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1724673245874</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fixed bigdecimal issue">
+      <option name="closed" value="true" />
+      <created>1724674539105</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1724674539105</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -141,7 +157,9 @@
     <MESSAGE value="fixed table name and creation of false fields" />
     <MESSAGE value="added README.md" />
     <MESSAGE value="refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring" />
+    <MESSAGE value="fixed bigint mapped to int instead of long issue" />
+    <MESSAGE value="fixed bigdecimal issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bigdecimal issue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

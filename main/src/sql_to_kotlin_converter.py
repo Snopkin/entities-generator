@@ -40,7 +40,17 @@ class SQLToKotlinConverter:
         table_name = table_name_match.group(1)
         kotlin_class_name = ''.join(word.capitalize() for word in table_name.split('_')) + "Entity"
 
-        kotlin_code = f"package com.example.model.entity\n\nimport java.math.BigDecimal\nimport java.time.OffsetDateTime\nimport java.util.UUID\n\n"
+        # Correctly format the import statements
+        kotlin_code = (
+            "package com.example.model.entity\n\n"
+            "import io.vertx.sqlclient.Row\n"
+            "import io.vertx.sqlclient.RowSet\n"
+            "import io.vertx.sqlclient.Tuple\n"
+            "import java.math.BigDecimal\n"
+            "import java.time.OffsetDateTime\n"
+            "import java.util.UUID\n\n"
+        )
+
         kotlin_code += f"data class {kotlin_class_name}(\n"
 
         columns = re.findall(r'(\w+)\s+([\w\(\)]+)', sql_text[sql_text.lower().find('('):])
@@ -99,7 +109,7 @@ class SQLToKotlinConverter:
         }
         sql_type_lower = sql_type.lower()
         for key in type_map:
-            if key == sql_type_lower:
+            if key in sql_type_lower:  # allow partial matches for types with precision (e.g., decimal(22, 10))
                 return type_map[key]
         return 'String'  # default to String if type not found
 
@@ -117,16 +127,18 @@ class SQLToKotlinConverter:
             'timestamptz': 'getOffsetDateTime',
             'timestamp': 'getOffsetDateTime',
             'decimal': 'getBigDecimal',
-            'int': 'getInteger',
             'bigint': 'getLong',
             'serial': 'getInteger',
             'bigserial': 'getLong',
-            'numeric': 'getBigDecimal'
+            'numeric': 'getBigDecimal',
+            'int': 'getInteger'
         }
+        sql_type_lower = sql_type.lower()
         for key in method_map:
-            if key in sql_type.lower():
+            if key in sql_type_lower:
                 return method_map[key]
-        return 'getString'  # Default to getString if method not found
+        return 'getString'  # default to getString if method not found
+
 
     def get_tuple_method(self, sql_type):
         method_map = {
@@ -138,14 +150,15 @@ class SQLToKotlinConverter:
             'timestamptz': 'addOffsetDateTime',
             'timestamp': 'addOffsetDateTime',
             'decimal': 'addBigDecimal',
-            'int': 'addInteger',
             'bigint': 'addLong',
             'serial': 'addInteger',
             'bigserial': 'addLong',
-            'numeric': 'addBigDecimal'
+            'numeric': 'addBigDecimal',
+            'int': 'addInteger'
         }
+        sql_type_lower = sql_type.lower()
         for key in method_map:
-            if key in sql_type.lower():
+            if key in sql_type_lower:
                 return method_map[key]
         return 'addString'  # default to addString if method not found
 
