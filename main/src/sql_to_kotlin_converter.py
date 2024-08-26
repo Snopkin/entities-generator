@@ -18,12 +18,19 @@ class SQLToKotlinConverter:
         kotlin_code = self.generate_kotlin_entity(sql_text)
 
         if kotlin_code:
-            self.root.lift()
-            self.root.attributes("-topmost", True)
-            file_path = filedialog.asksaveasfilename(defaultextension=".kt", filetypes=[("Kotlin Files", "*.kt")])
-            if file_path:
-                with open(file_path, 'w') as file:
-                    file.write(kotlin_code)
+            output_window = tk.Toplevel(self.root)
+            output_window.title("Generated Kotlin Code")
+
+            output_text = tk.Text(output_window, height=100, width=120)
+            output_text.pack()
+
+            output_text.insert(tk.END, kotlin_code)
+
+            output_text.config(state=tk.DISABLED)
+
+            scrollbar = tk.Scrollbar(output_window, command=output_text.yview)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            output_text.config(yscrollcommand=scrollbar.set)
 
     def generate_kotlin_entity(self, sql_text):
         table_name_match = re.search(r'create table (\w+)', sql_text, re.IGNORECASE)
@@ -84,16 +91,17 @@ class SQLToKotlinConverter:
             'timestamptz': 'OffsetDateTime',
             'timestamp': 'OffsetDateTime',
             'decimal': 'BigDecimal',
-            'int': 'Int',
             'bigint': 'Long',
             'serial': 'Int',
             'bigserial': 'Long',
-            'numeric': 'BigDecimal'
+            'numeric': 'BigDecimal',
+            'int': 'Int'
         }
+        sql_type_lower = sql_type.lower()
         for key in type_map:
-            if key in sql_type.lower():
+            if key == sql_type_lower:
                 return type_map[key]
-        return 'String'  # Default to String if type not found
+        return 'String'  # default to String if type not found
 
     def to_camel_case(self, snake_str):
         components = snake_str.split('_')
@@ -139,7 +147,7 @@ class SQLToKotlinConverter:
         for key in method_map:
             if key in sql_type.lower():
                 return method_map[key]
-        return 'addString'  # Default to addString if method not found
+        return 'addString'  # default to addString if method not found
 
 
 if __name__ == "__main__":
